@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension
+    type="module"
+    version="3.2"
+    client="site"
+    method="upgrade">
+    <name>AE article slider</name>
+    <author>https://github.com/LewisGet</author>
+    <creationDate>2015-10-08</creationDate>
+    <copyright>Copyright (C) 2015 - 2115 https://github.com/LewisGet</copyright>
+    <license>GNU General Public License</license>
+    <authorEmail>lewis.aedes@gmail.com</authorEmail>
+    <authorUrl>https://github.com/LewisGet</authorUrl>
+    <version>1.0</version>
+    <description>article slider</description>
+    <files>
+        <filename module="mod_articleslider">mod_articleslider.php</filename>
+        <folder>tmpl</folder>
+        <filename>mod_articleslider.xml</filename>
+    </files>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field
+                    name="acticle_id"
+                    type="text"
+                    label="acticle_ids"
+                    description="acticle_ids" />
+
+                <field
+                    name="speed"
+                    type="text"
+                    label="speed"
+                    description="speed" />
+
+                <field
+                    name="acticle_url"
+                    type="text"
+                    label="acticle url"
+                    description="eg /content/{id}.html" />
+
+                <field
+                    name="left_button_display"
+                    type="textarea"
+                    label="left button display"
+                    description="left button display" />
+
+                <field
+                        name="right_button_display"
+                        type="textarea"
+                        label="right button display"
+                        description="right button display" />
+            </fieldset>
+        </fields>
+    </config>
+</extension>

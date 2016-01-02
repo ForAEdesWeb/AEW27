@@ -1,0 +1,52 @@
+#marquee-items
+{
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    clear: both;
+
+    .item
+    {
+        max-width: 350px;
+        min-width: 200px;
+        width: 10%;
+        margin: 0 1% 0 0;
+
+        background-color: #777;
+        border: 4px solid #777;
+        border-radius: 0 0 15px 15px;
+
+        vertical-align: top;
+        text-align: center;
+
+        display: inline-block;
+
+        img
+        {
+            max-width: 100%;
+            border: 0;
+        }
+
+        h4
+        {
+            font-size: 1.1em;
+            max-width: 100%;
+            margin: 0;
+            padding: 5px 0;
+            white-space: normal;
+        }
+
+        &:hover
+        {
+            margin: -1% 3% 2% -1%;
+            max-width: 400px;
+            min-width: 250px;
+            width: 12%;
+
+            h4
+            {
+                font-size: 1.3em;
+            }
+        }
+    }
+}

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="4.80" method = "upgrade">
+	<name>JBGMusic</name>
+	<author>Jfriendly.net</author>
+	<creationDate>October 19, 2008 - September 30, 2012</creationDate>
+	<copyright>2008-2012 Jfriendly.net. All rights reserved.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail></authorEmail>
+	<authorUrl>http://www.jfriendly.net</authorUrl>
+	<version>4.80</version>
+	<description><![CDATA[Add Background Music/Sound to your Joomla content.  Caution: large files will make your webpage load slower, so limit the size of your file. For questions regarding this module, please check our FAQ at <a href="http://www.jfriendly.net">Jfriendly.net</a>.
+                    <p>No warranties/guarantees provided or implied.</p>
+                    <p>If you like this extension, please consider making a donation at <a href="http://www.jfriendly.net">Jfriendly.net</a>.</p>]]>
+	</description>
+	<files>
+		<filename module="mod_jbgmusic">mod_jbgmusic.php</filename>
+                <filename>includes/helper.php</filename>
+                <filename>includes/support_license.php</filename>
+                <filename>swf/xspf_player_small.swf</filename>
+                <filename>swf/xspf_player_slim.swf</filename>
+                <filename>license.txt</filename>
+                <filename>images/pause_bn.png</filename>
+                <filename>images/play_bn.png</filename>
+                <filename>images/volume-dn.png</filename>
+                <filename>images/volume-up.png</filename>
+                <filename>js/soundfunction.js</filename>
+                <filename>css/buttons.css</filename>
+                <filename>index.html</filename>
+                <filename>js/index.html</filename>
+                <filename>includes/index.html</filename>
+                <filename>css/index.html</filename>
+                <filename>swf/index.html</filename>
+                <filename>images/index.html</filename>
+	</files>
+
+        <!-- Joomla! 1.7/2.5/3.0 uses fields -->
+
+        <config>
+          <fields name="params">
+          <fieldset name="basic">
+        	<field name="moduleclass_sfx" type="text" default="_none" label="Module Class Suffix" description="A suffix to be applied to the css class of the module.  '_none' is a dummy value to override the module class." />
+                <field name="jsound_location" type="text" default="images" label="Audio Location" description="location of sound/audio file.  The default is in your images directory." />
+                
+                <field name="jsound_file" type="textarea" default="" label="Audio File" description="Name of audio file to play in the background separated by commas. For external audio files, complete url must be indicated (ie. http://www.foo.com/audio.mp3). Check FAQ at http://www.JFriendly.net regarding cross browser support." cols="60" rows="4" />
+                
+                <field name="jrandom_play" type="radio" default="1" label="Treat as Playlist?" description="Treat list of audio files as a playlist, otherwise, an audio file will be randomly chosen.">
+                       <option value="0">No</option>
+                       <option value="1">Yes</option>
+                </field>
+                <field name="jshuffle_play" type="radio" default="0" label="Shuffle play?" description="This determines whether the playlist is shuffled or played as arranged.">
+                       <option value="0">No</option>
+                       <option value="1">Yes</option>
+                </field>
+                <field name="jloop_sound" type="radio" default="1" label="Loop Music" description="Choose whether to loop the music.">
+                       <option value="0">No</option>
+                       <option value="1">Yes</option>
+                </field>
+                <field name="jhidden_controls" type="radio" default="0" label="Hide controls?" description="Choose whether to show controllers.">
+                       <option value="0">No</option>
+                       <option value="1">Yes</option>
+                </field>
+                <field name="jautostart" type="radio" default="1" label="Autostart audio?" description="Will only be applicable if controls are visible otherwise, audio will always be autostarted.">
+                       <option value="0">No</option>
+                       <option value="1">Yes</option>
+                </field>
+                <field name="jautoresume" type="radio" default="1" label="Autoresume audio?" description="Will attempt to resume audio when you move to a different page. Do not use on multiple copies JBGMusic.">
+                       <option value="0">No</option>
+                       <option value="1">Yes</option>
+                </field>
+                <field name="jplayertype" type="radio" default="1" label="Player Type" description="Choose the player type. (Note: not applicable on HTML5 player)">
+                       <option value="0">Full</option>
+                       <option value="1">Compact</option>
+                </field>
+                
+                <field name="jbutton_color" type="list" default="blue button" label="Button Color" description="This determines the button color. Custom color requires CSS modification.  (Note: works with HTML5 buttons only)">
+                       <option value="transparent">Transparent</option>
+                       <option value="blue button">Blue</option>
+                       <option value="green button">Green</option>
+                       <option value="red button">Red</option>
+                       <option value="yellow button">Yellow</option>
+                       <option value="orange button">Orange</option>
+                       <option value="white button">White</option>
+                       <option value="custom button (CSS)">Custom</option>
+                       <option value=" ">No decoration</option>
+                </field>
+                 <field name="jforce_flash" type="radio" default="0" label="Force Flash Player" description="Choose whether to only use the old flash player only. (Not recommended)">
+                       <option value="0">No</option>
+                       <option value="1">Yes</option>
+                </field>
+                 <field name="jalert_status" type="radio" default="0" label="Turn off all Alerts" description="Choose whether to turn off all error popups.  Make sure you have both audio files as this will not be checked.">
+                       <option value="0">No</option>
+                       <option value="1">Yes</option>
+                </field>
+                <field name="jkeycode" type="textarea" default="" label="Unique Key" description="If you want to remove the label and backlink, you must get a Unique Key at JFriendly.net.  Just copy paste the Unique Key here.  One unique key for each domain site. For multiple domain sites, you can separate each unique key with a comma delimeter." />
+
+                <field name="jtemp_location" type="text" default="tmp" label="Temp Directory" description="location of where you wish to store temporary data.  Use this if you don't have access to your /tmp directory.  The default is in your /tmp directory." />
+        </fieldset>
+        
+        </fields>
+        </config> 
+</extension>
