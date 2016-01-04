@@ -23,9 +23,11 @@ class articleslider_display
 
 $tempDisplay = new articleslider_display();
 ?>
-<!--<style>
+
+<style>
     #marquee-items {
         max-width: 100%;
+        padding: 1%;
         overflow: hidden;
         white-space: nowrap;
         clear: both;
@@ -45,6 +47,10 @@ $tempDisplay = new articleslider_display();
     #marquee-items .item:hover {
         background-color: #ff0000;
         border: 4px solid #ff0000;
+        margin: -1% 0% 1% -1%;
+        max-width: 400px;
+        min-width: 250px;
+        width: 12%;
     }
     #marquee-items .item img {
         max-width: 100%;
@@ -62,48 +68,8 @@ $tempDisplay = new articleslider_display();
     #marquee-items .item:hover h4 {
         color: #eee;
     }
-</style>-->
-<style>
-#marquee-items {
-  max-width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  clear: both;
-}
-#marquee-items .item {
-  max-width: 350px;
-  min-width: 200px;
-  width: 10%;
-  margin: 0 1% 0 0;
-  background-color: #777;
-  border: 4px solid #777;
-  border-radius: 0 0 15px 15px;
-  vertical-align: top;
-  text-align: center;
-  display: inline-block;
-}
-#marquee-items .item img {
-  max-width: 100%;
-  border: 0;
-}
-#marquee-items .item h4 {
-  font-size: 1.1em;
-  max-width: 100%;
-  margin: 0;
-  padding: 5px 0;
-  white-space: normal;
-}
-#marquee-items .item:hover {
-  margin: -1% 3% 2% -1%;
-  max-width: 400px;
-  min-width: 250px;
-  width: 12%;
-}
-#marquee-items .item:hover h4 {
-  font-size: 1.3em;
-}
-
 </style>
+
 <div class="row">
     <div class="col-xs-1 text-center" id="marquee-left">
         <?php
