@@ -54,8 +54,8 @@ class JConfig {
 	public $sef_suffix = '1';
 	public $unicodeslugs = '1';
 	public $feed_limit = '10';
-	public $log_path = "{__DIR__}/logs";
-	public $tmp_path = "{__DIR__}/tmp";
+	public $log_path = "/var/www/tool2.dsa.tw/logs";
+	public $tmp_path = "/var/www/tool2.dsa.tw/tmp";
 	public $lifetime = '15';
 	public $session_handler = 'database';
 	public $memcache_persist = '1';
