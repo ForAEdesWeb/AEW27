@@ -38,10 +38,10 @@ $about_field = $params->get('UserInfo_AboutField', 'BASIC_ABOUT');
 			}
 		?>
 			<dt>
-				<?php echo $field->title; ?>
+				<?php echo $this->escape($field->title); ?>
 			</dt>
 			<dd>
-				<?php echo $data->datas[$field->fieldname]; ?>
+				<?php echo $this->escape($data->datas[$field->fieldname]); ?>
 			</dd>
 		<?php endforeach; ?>
 	</dl>

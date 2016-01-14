@@ -20,6 +20,7 @@ defined('_JEXEC') or die;
  * @var $item      Windwalker\Data\Data
  * @var $params    Joomla\Registry\Registry
  * @var $profile   \Windwalker\CCK\Form
+ * @var $this      \Windwalker\View\Engine\PhpEngine
  */
 $container = $this->getContainer();
 $params  = $data->item->params;
@@ -69,8 +70,8 @@ $show_cats = $data->params->get('show_categories', '*') ;
 						<div class="profile-avatar span4">
 
 							<div class="profile-avatar-inner">
-								<?php $avatar = $item->get($avatar_field); ?>
-								<img src="<?php echo $avatar ? $avatar : \Userxtd\Avatar\Avatar::getDefaultAvatar(); ?>" class="img-polaroid" alt="UserXTD Avatar <?php echo $user->username; ?>" />
+								<?php $avatar = $this->escape($item->get($avatar_field)); ?>
+								<img src="<?php echo $avatar ? $avatar : \Userxtd\Avatar\Avatar::getDefaultAvatar(); ?>" class="img-polaroid" alt="UserXTD Avatar <?php echo $this->escape($user->username); ?>" />
 							</div>
 
 						</div>
@@ -103,14 +104,14 @@ $show_cats = $data->params->get('show_categories', '*') ;
 
 
 								<div class="heading">
-									<h2><?php echo $item->get('link_titles') ? JHtml::_('link', $item->link, $item->name) : $item->name ?></h2>
-									<div class="user-name">( <?php echo $item->username; ?> )</div>
+									<h2><?php echo $item->get('link_titles') ? JHtml::_('link', $item->link, $this->escape($item->name)) : $this->escape($item->name) ?></h2>
+									<div class="user-name">( <?php echo $this->escape($item->username); ?> )</div>
 								</div>
 
 								<hr />
 
 								<div class="about">
-									<?php echo $item->{$about_field}; ?>
+									<?php echo nl2br($this->escape($item->{$about_field})); ?>
 								</div>
 							</div>
 

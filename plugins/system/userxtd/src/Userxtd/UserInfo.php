@@ -12,6 +12,8 @@ namespace Userxtd;
  * Class UserInfo
  *
  * @since 1.0
+ *
+ * @deprecated
  */
 class UserInfo
 {

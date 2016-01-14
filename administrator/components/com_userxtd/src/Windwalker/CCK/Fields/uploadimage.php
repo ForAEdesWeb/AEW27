@@ -98,7 +98,9 @@ class JFormFieldUploadimage extends JFormField
 		$container = \Windwalker\DI\Container::getInstance();
 		$input = $container->get('input');
 
-		if ($input->get($this->element['name'] . '_delete') == 1)
+		$delete = isset($_REQUEST['jform']['profile'][$this->element['name'] . '_delete']) ? $_REQUEST['jform']['profile'][$this->element['name'] . '_delete'] : 0 ;
+
+		if ($delete == 1)
 		{
 			$this->value = '';
 		}

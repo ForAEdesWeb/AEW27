@@ -18,8 +18,16 @@
 	margin-bottom: 10px;
 }
 
+.ux-user-info-warp .ux-user-left {
+	float: left;
+}
+
 .ux-user-info-warp .ux-user-left img {
 	border-radius: 4px;
+}
+
+.ux-user-info-warp .ux-user-right {
+	overflow: auto;
 }
 
 .ux-user-info-warp .ux-user-right-inner {

@@ -197,7 +197,7 @@ class PlgSystemUserxtd extends JPlugin
 			{
 				$this->initComponent();
 
-				$result .= \Userxtd\Content\UserInfo::createInfoBox($this->getContainer(), $article, $params);
+				$article->text .= \Userxtd\Content\UserInfo::createInfoBox($this->getContainer(), $article, $params);
 			}
 		}
 
@@ -356,7 +356,7 @@ class PlgSystemUserxtd extends JPlugin
 		$db = JFactory::getDbo();
 
 		// don't do anything when activate.
-		$allowTask = array('save', 'apply', 'save2new', 'user.edit.save');
+		$allowTask = array('register', 'save', 'apply', 'save2new', 'user.edit.save');
 
 		if (! in_array($this->input->get('task'), $allowTask))
 		{

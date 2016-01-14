@@ -9,7 +9,7 @@
 	<author>Asika</author>
 	<authorEmail>asika32764@gmail.com</authorEmail>
 	<authorUrl>http://asikart.com</authorUrl>
-	<version>1.0.1</version>
+	<version>1.0.3</version>
 	<description></description>
 
 	<scriptfile>install.php</scriptfile>
@@ -27,6 +27,12 @@
 			</file>
 		</sql>
 	</uninstall>
+
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates</schemapath>
+		</schemas>
+	</update>
 
 	<files folder="../site">
 		<folder>asset</folder>
@@ -92,7 +98,7 @@
 	</plugins>
 
 	<updateservers>
-		<server type="extension" priority="1" name="Asikart Userxtd Component">https://raw.githubusercontent.com/asikart/userxtd/staging/update.xml</server>
+		<server type="extension" priority="1" name="Asikart UserXTD">https://raw.githubusercontent.com/asikart/userxtd/staging/update.xml</server>
 	</updateservers>
 
 </extension>

@@ -9,6 +9,11 @@
 		"view" : "user"
 	},
 
+	"user_content": {
+		"pattern": ":username/content",
+		"view": "content"
+	},
+
 	"user_layout": {
 		"pattern": ":layout/:id",
 		"view" : "user"
