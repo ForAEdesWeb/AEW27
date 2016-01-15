@@ -566,125 +566,121 @@ class J2StoreModelProducts extends J2StoreModel
 		return $results;
 	}
 
-	/**
-	 * @param $cats
-	 * @return array
-	 */
-	public function sortCategories($cats)
-	{
-		$cloneCats = $this->cloneArrayObject($cats);
-		$treeCats = array();
-		$treeKey = 0;
+    /**
+     * @param $cats
+     * @return array
+     */
+    public function sortCategories($cats)
+    {
+        $cloneCats = $cats;
+        $treeCats = array();
+        $treeKey = 0;
 
-		foreach ($cats as $cat)
-		{
-			$parent = $this->catFoundClosestParent($cat, $cloneCats);
+        foreach ($cats as $cat)
+        {
+            $parent = $this->catFoundClosestParent($cat, $cloneCats);
 
-			$treeCats[$treeKey] = clone $cat;
+            $treeCats[$treeKey] = $cat;
 
-			// is root
-			if ($parent == null)
-			{
-				$treeCats[$treeKey]->isRoot = true;
-				$treeCats[$treeKey]->parentCat = null;
-			}
-			else
-			{
-				$treeCats[$treeKey]->isRoot = false;
-				$treeCats[$treeKey]->parentCat = $parent;
-			}
+            // is root
+            if ($parent == null)
+            {
+                $treeCats[$treeKey]->isRoot = true;
+                $treeCats[$treeKey]->parentCat = null;
+            }
+            else
+            {
+                // 如果沒有女
+                if (! isset($parent->childCat))
+                {
+                    $parent->childCat = array();
+                }
 
-			$treeKey++;
-		}
+                // 這是他的女
+                $parent->childCat[] = $cat;
 
-		return $treeCats;
-	}
+                $treeCats[$treeKey]->isRoot = false;
+                $treeCats[$treeKey]->parentCat = $parent;
+            }
 
-	public function catFoundClosestParent($cat, $parents)
-	{
-		$returnValue = null;
+            $treeKey++;
+        }
 
-		foreach ($parents as $parent)
-		{
-			if ($this->isCloserParent($cat, $returnValue, $parent))
-			{
-				$returnValue = clone $parent;
-			}
-		}
+        return $treeCats;
+    }
 
-		return $returnValue;
-	}
+    public function catFoundClosestParent($cat, $parents)
+    {
+        $returnValue = null;
 
-	/**
-	 * @param $cat
-	 * @param $now
-	 * @param $new
-	 * @return bool
-	 */
-	public function isCloserParent($cat, $now, $new)
-	{
-		// for init
-		if (! is_object($now))
-		{
-			if ($this->isParent($new, $cat))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
+        foreach ($parents as $parent)
+        {
+            if ($this->isCloserParent($cat, $returnValue, $parent))
+            {
+                $returnValue = $parent;
+            }
+        }
 
-		if (! $this->between($new->lft, $cat->lft, $now->lft))
-		{
-			return false;
-		}
+        return $returnValue;
+    }
 
-		if (! $this->between($new->rgt, $now->rgt, $cat->rgt))
-		{
-			return false;
-		}
+    /**
+     * @param $cat
+     * @param $now
+     * @param $new
+     * @return bool
+     */
+    public function isCloserParent($cat, $now, $new)
+    {
+        // for init
+        if (! is_object($now))
+        {
+            if ($this->isParent($new, $cat))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-		if (! $this->isParent($new, $cat))
-		{
-			return false;
-		}
+        if (! $this->between($new->lft, $cat->lft, $now->lft))
+        {
+            return false;
+        }
 
-		return true;
-	}
+        if (! $this->between($new->rgt, $now->rgt, $cat->rgt))
+        {
+            return false;
+        }
 
-	/**
-	 * @param $parent
-	 * @param $sum
-	 * @return bool
-	 */
-	public function isParent($parent, $sum)
-	{
-		return (($parent->lft < $sum->lft) and ($parent->rgt > $sum->rgt));
-	}
+        if (! $this->isParent($new, $cat))
+        {
+            return false;
+        }
 
-	/**
-	 * @param $v
-	 * @param $max
-	 * @param $min
-	 * @return bool
-	 */
-	public function between($v, $max, $min)
-	{
-		return (($max > $v) and ($v > $min));
-	}
+        return true;
+    }
 
-	public function cloneArrayObject($vs)
-	{
-		$r = array();
+    /**
+     * @param $parent
+     * @param $sum
+     * @return bool
+     */
+    public function isParent($parent, $sum)
+    {
+        return (($parent->lft < $sum->lft) and ($parent->rgt > $sum->rgt));
+    }
 
-		foreach ($vs as $k => $v)
-		{
-			$r[$k] = clone $v;
-		}
-
-		return $r;
-	}
+    /**
+     * @param $v
+     * @param $max
+     * @param $min
+     * @return bool
+     */
+    public function between($v, $max, $min)
+    {
+        return (($max > $v) and ($v > $min));
+    }
 }
-

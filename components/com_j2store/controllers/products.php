@@ -150,7 +150,13 @@ class J2StoreControllerProducts extends J2StoreController {
 			$filter_categories = $menu->params->get('categories');
 		}
 
-		$filters['filter_categories'] = $model->getCategories($filter_categories);
+        $filters['filter_categories'] = $model->getCategories($filter_categories);
+
+        // sort filter categories to tree
+        $filters['filter_tree_categories'] = $model->sortCategories($filters['filter_categories']);
+
+        // load hidden field
+        $filters['filter_hidden_categories'] = $menu->params->get('hidden_categories');
 
 		//price filters
 		if(isset($items['0']->item_price)) {
