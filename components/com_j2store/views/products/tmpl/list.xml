@@ -15,6 +15,8 @@
 				<fieldset name="basic">
 					<field name="page_limit" type="text" default="20" description="J2STORE_PRODUCT_LAYOUT_PAGE_LIMIT_DESC" label="J2STORE_PRODUCT_LAYOUT_PAGE_LIMIT"/>
 					<field required="true" multiple="true" name="categories" type="category" extension="com_content" default="" label="J2STORE_CATEGORIES" description="J2STORE_CATEGORIES_DESC" />
+
+					<field required="false" multiple="true" name="hidden_categories" type="category" extension="com_content" default="" label="J2STORE_HIDDEN_CATEGORIES" description="J2STORE_HIDDEN_CATEGORIES_DESC" />
 					
 					<field name="show_sub_categories" type="radio" default="0"
 				            class="btn-group" label="COM_J2STORE_SHOW_SUB_CATEGORIES"

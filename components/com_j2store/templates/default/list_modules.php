@@ -11,6 +11,118 @@
 /** Check to ensure this file is included in Joomla! */
 defined('_JEXEC') or die( 'Restricted access' );
 $remove_pricefilter_url = "index.php";
+
+// 眼花懶得看 joomla or j2store 怎麼吃模板了，有空再改
+class lazyTemplates
+{
+	public $category;
+	public $hiddenCategory;
+	public $hiddenContent;
+
+	public function getItem()
+	{
+		$html = "<li class=\"j2product_categories level{$this->category->level}\">";
+		$title = $this->getTitle($this->category->title);
+
+		$href = $this->getHref($title);
+
+		if (in_array($this->category->id, $this->hiddenCategory))
+		{
+			$href = $this->getHiddenButton($title, $this->hiddenContent);
+		}
+
+		$html .=  $href;
+		$html .= "</li>";
+
+		return $html;
+	}
+
+	public function getCategoryImage()
+	{
+		$categoryParams = json_decode($this->category->params);
+
+		if(! isset($categoryParams->image) or empty($categoryParams->image))
+		{
+			return "";
+		}
+
+		return "<img class=\"j2store-category-icon\" src=\"{$categoryParams->image}\" />";
+	}
+
+	public function getTitle()
+	{
+		$level = str_repeat("<span class='space'></span>", $this->category->level);
+		$images = $this->getCategoryImage();
+
+		return "<span class=\"j2store-item-rootcategory\">{$level}{$images}{$this->category->title}</span>";
+	}
+
+	public function getHref($content)
+	{
+		$url = JRoute::_("&filter_category={$this->category->id}&category_title={$this->category->title}");
+
+		return "<a href=\"{$url}\">{$content}</a>";
+	}
+
+	public function getHiddenButton($content, $hiddenContent = "")
+	{
+		return "{$content}<a class='AEHiddenCategory'>{$hiddenContent}</a>";
+	}
+
+	public function getUl($content)
+	{
+		return "<ul class='j2store_hidden_categories'>{$content}</ul>";
+	}
+}
+
+class treeCategories
+{
+	public $categories;
+	public $hiddenCategory;
+
+	public function getChilds($parentCat)
+	{
+		$childCats = array();
+
+		foreach ($this->categories as $childCat)
+		{
+			if ($childCat->parentCat->id == $parentCat->id)
+			{
+				$childCats[] = $childCat;
+			}
+		}
+
+		return $childCats;
+	}
+
+	public function getTree()
+	{
+		$template = new lazyTemplates();
+		$template->hiddenCategory = $this->hiddenCategory;
+
+		$li = "";
+
+		foreach ($this->categories as $cat)
+		{
+			$childs = $this->getChilds($cat);
+			$template->hiddenContent = "";
+			$template->category = $cat;
+
+			// 有女
+			if (! empty($childs))
+			{
+				$tree = new treeCategories();
+				$tree->categories = $childs;
+				$tree->hiddenCategory = $this->hiddenCategory;
+
+				$template->hiddenContent = $tree->getTree();
+				$li .= $template->getItem();
+			}
+		}
+
+		return $template->getUl($li);
+	}
+}
 ?>
 
 <div class="j2store-product-filter-modules">
@@ -27,27 +139,20 @@ $remove_pricefilter_url = "index.php";
 		<h4><?php echo JText::_('J2STORE_CATEGORY_FILTER_TITTLE'); ?></h4>
 		<div id="j2store_category">
 		<ul id="j2store_categories_mod" class="unstyled nav nav-stacked">
-			<?php foreach ($this->filters['filter_categories'] as $item) : ?>
-			<li class="j2product_categories level<?php echo $item->level?>">
 			<?php
-				$categoryParams = json_decode($item->params);
-			?>
-			
-			<a href="<?php echo JRoute::_( "&filter_category=".$item->id."&category_title=".$item->title); ?>">
-				
-			<?php if(isset($categoryParams->image) and !empty($categoryParams->image)) { ?>
-				<img class="j2store-category-icon" src="<?php echo $categoryParams->image; ?>" />
-			<?php } ?>
-				
-			<?php if($item->level >1):?>
-				<span class="j2store-item-rootcategory"><?php echo str_repeat("-", $item->level);?><?php echo $item->title; ?></span>
-			<?php else:?>
-				<span class="j2store-item-rootcategory"><?php echo $item->title; ?></span>
-			<?php endif;?>
-			</a>
+				$tree = new treeCategories();
+				$tree->hiddenCategory = $this->filters['filter_hidden_categories'];
 
-			</li>
-			<?php endforeach; ?>
+				foreach ($this->filters['filter_tree_categories'] as $item)
+				{
+					if ($item->isRoot)
+					{
+						$tree->categories = array($item);
+
+						echo $tree->getTree();
+					}
+				}
+			?>
 		</ul>
 		</div>
 

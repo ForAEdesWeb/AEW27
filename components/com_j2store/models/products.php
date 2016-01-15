@@ -273,37 +273,37 @@ class J2StoreModelProducts extends J2StoreModel
 		}elseif($filter_category){
 			//check categoryid exists in the state
 			//fetch the items nased on the query
-			
+
 			// 是否顯示子分類
 			if ($menu->params->get('show_sub_categories', 0))
 			{
 				$db = JFactory::getDbo();
 				$categoriesQuery = $db->getQuery(true);
-				
+
 				// get category lft rgt
 				$categoriesQuery->select('lft, rgt')->from('#__categories')->where('id='.$filter_category);
-				
+
 				$db->setQuery($categoriesQuery);
 				$category = $db->loadObject();
-				
+
 				// clear query
 				$categoriesQuery = $db->getQuery(true);
-				
+
 				// load child category
 				$categoriesQuery->select('id')->from('#__categories')->where('lft >= ' . $category->lft . ' AND rgt <= ' . $category->rgt);
-				
+
 				$db->setQuery($categoriesQuery);
 				$categorys = $db->loadObjectList();
-				
+
 				$cids = array();
-				
+
 				foreach($categorys as $cat)
 				{
 					$cids[] = $cat->id;
 				}
-				
+
 				$cids = implode(',',$cids);
-				
+
 				$query->where('p.catid IN (' . $cids . ')');
 			}
 			else
@@ -566,6 +566,125 @@ class J2StoreModelProducts extends J2StoreModel
 		return $results;
 	}
 
+	/**
+	 * @param $cats
+	 * @return array
+	 */
+	public function sortCategories($cats)
+	{
+		$cloneCats = $this->cloneArrayObject($cats);
+		$treeCats = array();
+		$treeKey = 0;
 
+		foreach ($cats as $cat)
+		{
+			$parent = $this->catFoundClosestParent($cat, $cloneCats);
 
+			$treeCats[$treeKey] = clone $cat;
+
+			// is root
+			if ($parent == null)
+			{
+				$treeCats[$treeKey]->isRoot = true;
+				$treeCats[$treeKey]->parentCat = null;
+			}
+			else
+			{
+				$treeCats[$treeKey]->isRoot = false;
+				$treeCats[$treeKey]->parentCat = $parent;
+			}
+
+			$treeKey++;
+		}
+
+		return $treeCats;
+	}
+
+	public function catFoundClosestParent($cat, $parents)
+	{
+		$returnValue = null;
+
+		foreach ($parents as $parent)
+		{
+			if ($this->isCloserParent($cat, $returnValue, $parent))
+			{
+				$returnValue = clone $parent;
+			}
+		}
+
+		return $returnValue;
+	}
+
+	/**
+	 * @param $cat
+	 * @param $now
+	 * @param $new
+	 * @return bool
+	 */
+	public function isCloserParent($cat, $now, $new)
+	{
+		// for init
+		if (! is_object($now))
+		{
+			if ($this->isParent($new, $cat))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		if (! $this->between($new->lft, $cat->lft, $now->lft))
+		{
+			return false;
+		}
+
+		if (! $this->between($new->rgt, $now->rgt, $cat->rgt))
+		{
+			return false;
+		}
+
+		if (! $this->isParent($new, $cat))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param $parent
+	 * @param $sum
+	 * @return bool
+	 */
+	public function isParent($parent, $sum)
+	{
+		return (($parent->lft < $sum->lft) and ($parent->rgt > $sum->rgt));
+	}
+
+	/**
+	 * @param $v
+	 * @param $max
+	 * @param $min
+	 * @return bool
+	 */
+	public function between($v, $max, $min)
+	{
+		return (($max > $v) and ($v > $min));
+	}
+
+	public function cloneArrayObject($vs)
+	{
+		$r = array();
+
+		foreach ($vs as $k => $v)
+		{
+			$r[$k] = clone $v;
+		}
+
+		return $r;
+	}
 }
+
