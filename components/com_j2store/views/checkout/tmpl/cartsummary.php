@@ -21,13 +21,19 @@ $com_path = JPATH_SITE.'/components/com_content/';
 require_once $com_path.'router.php';
 require_once $com_path.'helpers/route.php';
 
+$hidden = array(
+	'price' => 1,
+	'quantity' => 1
+);
 ?>
 		  <h3><?php echo JText::_('J2STORE_CARTSUMMARY'); ?></h3>
            <table id="cart" class="adminlist table table-striped table-bordered table-hover">
             <thead>
                 <tr>
                     <th><?php echo JText::_( "J2STORE_CARTSUMMARY_PRODUCTS" ); ?></th>
-                    <th><?php echo JText::_( "J2STORE_CARTSUMMARY_TOTAL" ); ?></th>
+					<?php if (! boolval($hidden['price'])): ?>
+						<th><?php echo JText::_( "J2STORE_CARTSUMMARY_TOTAL" ); ?></th>
+					<?php endif; ?>
                 </tr>
             </thead>
             <tbody>
@@ -42,7 +48,9 @@ require_once $com_path.'helpers/route.php';
                 <tr class="row<?php echo $k; ?>">
                     <td>
                         <a href="<?php echo $link; ?>"><?php echo $item->orderitem_name; ?></a>
+						<?php if (! boolval($hidden['quantity'])): ?>
                         x <?php echo $item->orderitem_quantity; ?>
+						<?php endif; ?>
                         <br/>
 
                         <?php if (!empty($item->orderitem_attribute_names)) : ?>
@@ -65,18 +73,24 @@ require_once $com_path.'helpers/route.php';
                             <br/>
                         <?php endif; ?>
 
+						<?php if (! boolval($hidden['price'])): ?>
                             <?php echo JText::_( "J2STORE_ITEM_PRICE" ); ?>
                             <?php echo J2StorePrices::number($item->orderitem_price); ?>
+						<?php endif; ?>
 
                     </td>
+
+					<?php if (! boolval($hidden['price'])): ?>
                     <td style="text-align: right;">
                         <?php echo J2StorePrices::number($item->orderitem_final_price); ?>
 
                     </td>
+					<?php endif; ?>
                 </tr>
             <?php ++$i; $k = (1 - $k); ?>
             <?php endforeach; ?>
             </tbody>
+		   <?php if (! boolval($hidden['price'])): ?>
             <tfoot>
                	<tr class="cart_subtotal">
                     <td style="font-weight: bold;">
@@ -87,7 +101,9 @@ require_once $com_path.'helpers/route.php';
                     </td>
                 </tr>
             </tfoot>
+		    <?php endif; ?>
         </table>
+		<?php if (! boolval($hidden['price'])): ?>
         <table class="table table-bordered cart-total" style="text-align: right;">
         	<!-- Shipping cost -->
         	<?php if (!empty($this->showShipping)): ?>
@@ -179,3 +195,4 @@ require_once $com_path.'helpers/route.php';
                 </tr>
 
         </table>
+		<?php endif; ?>

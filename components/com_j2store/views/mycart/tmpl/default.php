@@ -32,6 +32,10 @@ if(isset($storeAddress->config_continue_shopping_url ) && JString::strlen($store
 	$continue_shopping_url = $storeAddress->config_continue_shopping_url;
 }
 
+$hidden = array(
+    'price' => 1,
+    'quantity' => 1
+);
 ?>
 <div class="j2store">
 <div class="row-fluid">
@@ -52,8 +56,12 @@ if(isset($storeAddress->config_continue_shopping_url ) && JString::strlen($store
             <thead>
                 <tr>
                     <th style="text-align: left;"><?php echo JText::_( "J2STORE_CART_ITEM" ); ?></th>
-                    <th><?php echo JText::_( "J2STORE_CART_ITEM_QUANTITY" ); ?></th>
-                    <th><?php echo JText::_( "J2STORE_CART_ITEM_TOTAL" ); ?></th>
+                    <?php if (! boolval($hidden['quantity'])): ?>
+                        <th><?php echo JText::_( "J2STORE_CART_ITEM_QUANTITY" ); ?></th>
+                    <?php endif; ?>
+                    <?php if (! boolval($hidden['price'])): ?>
+                        <th><?php echo JText::_( "J2STORE_CART_ITEM_TOTAL" ); ?></th>
+                    <?php endif; ?>
                     <th><?php echo JText::_( "J2STORE_CART_ITEM_REMOVE" ); ?></th>
                 </tr>
             </thead>
@@ -94,8 +102,11 @@ if(isset($storeAddress->config_continue_shopping_url ) && JString::strlen($store
 	                    <?php if($this->params->get('show_sku_field') && JString::strlen($item->product_model) > 0) : ?>
 	                    	<?php echo JText::_( "J2STORE_SKU" ); ?>: <?php echo $item->product_model; ?>
 	                    <?php endif; ?>
-	                   <?php echo JText::_( "J2STORE_ITEM_PRICE" ); ?>: <?php echo J2StorePrices::number($item->price); ?>
+                        <?php if (! boolval($hidden['price'])): ?>
+	                        <?php echo JText::_( "J2STORE_ITEM_PRICE" ); ?>: <?php echo J2StorePrices::number($item->price); ?>
+                        <?php endif; ?>
                     </td>
+                    <?php if (! boolval($hidden['quantity'])): ?>
                     <td style="text-align: center;" class="product_quantity_input">
                         <?php $type = 'text';
                        ?>
@@ -105,10 +116,18 @@ if(isset($storeAddress->config_continue_shopping_url ) && JString::strlen($store
                         <!-- Keep Original quantity to check any update to it when going to checkout -->
                         <input name="original_quantities[<?php echo $item->key; ?>]" type="hidden" value="<?php echo $item->quantity; ?>" />
                     </td>
+                    <?php else: ?>
+                        <input type="hidden" name="quantity[<?php echo $item->key; ?>]" value="1" size="1" />
+
+                        <!-- Keep Original quantity to check any update to it when going to checkout -->
+                        <input name="original_quantities[<?php echo $item->key; ?>]" type="hidden" value="1" />
+                    <?php endif; ?>
+                    <?php $subtotal = $subtotal + $item->total; ?>
+                    <?php if (! boolval($hidden['price'])): ?>
                     <td style="text-align: right;">
-                        <?php $subtotal = $subtotal + $item->total; ?>
                         <?php echo J2StorePrices::number($item->total); ?>
                     </td>
+                    <?php endif; ?>
                     <td><a href="javascript:void(0)" title="<?php echo JText::_( 'J2STORE_CART_REMOVE_ITEM' ); ?>" onclick="j2storeCartRemove('<?php echo $item->key; ?>', <?php echo $item->product_id; ?>, 2)">
                     <div class="j2storeCartRemove"> </div>
                     </a>  </td>
@@ -116,6 +135,7 @@ if(isset($storeAddress->config_continue_shopping_url ) && JString::strlen($store
             <?php ++$i; $k = (1 - $k); ?>
             <?php endforeach; ?>
             </tbody>
+            <?php if (! boolval($hidden['price'])): ?>
             <tfoot class="j2store-cart-footer" >
              <!-- subtotal -->
                	<tr class="cart_subtotal">
@@ -189,6 +209,7 @@ if(isset($storeAddress->config_continue_shopping_url ) && JString::strlen($store
 	                  <td></td>
                 </tr>
             </tfoot>
+            <?php endif; ?>
         </table>
         <table id="cart_actions" width="100%">
 
@@ -201,9 +222,11 @@ if(isset($storeAddress->config_continue_shopping_url ) && JString::strlen($store
                     </td>
                     <?php endif;?>
 
+                    <?php if (! boolval($hidden['quantity'])): ?>
                     <td colspan="<?php echo $colspan = isset($continue_shopping_url)?'3':'5';?>">
                         <input style="float: right;" type="submit" class="j2store_cart_button btn btn-warning" value="<?php echo JText::_('J2STORE_UPDATE_QUANTITIES'); ?>" name="update" />
                     </td>
+                    <?php endif; ?>
                 </tr>
 
                 <tr>
